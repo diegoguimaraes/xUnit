@@ -21,5 +21,9 @@ suite.add(TestExample("test_example"))
 result = TestResult()
 suite.run(result)
 print result.summary()
-
 ```
+Output:
+
+`
+1 run, 0 failed
+`
