@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/diegoguimaraes/xUnit.svg)](https://travis-ci.org/diegoguimaraes/xUnit)
+
 # xUnit
 
 Basic unit test framework for practice purposes, based on "Test-Driven Development by Example" by Kent Beck.
