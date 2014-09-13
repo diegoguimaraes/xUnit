@@ -5,7 +5,7 @@
 Basic unit test framework for practice purposes, based on "Test-Driven Development by Example" by Kent Beck.
 
 ### Tests
-Run the framework tests with `python tests.py`
+Run the framework tests with `python xunit/test/tests.py`
 
 
 ### Usage example
