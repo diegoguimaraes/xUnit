@@ -1,3 +1,7 @@
+import sys
+import inspect
+
+
 class TestCase(object):
 
     def __init__(self, name):
@@ -16,7 +20,8 @@ class TestCase(object):
         try:
             method = getattr(self, self.name)
             method()
-        except:
+        except Exception, e:
+            print(e.message)
             result.test_failed()
         self.tearDown()
 
@@ -33,7 +38,7 @@ class WasRun(TestCase):
     def tearDown(self):
         self.log += "tearDown "
 
-    def test_broken_method(self):
+    def broken_method(self):
         raise Exception
 
 
@@ -56,11 +61,37 @@ class TestResult(object):
 class TestSuite(object):
 
     def __init__(self):
+        self._module = '__main__'
         self.tests = []
 
     def add(self, test):
         self.tests.append(test)
 
     def run(self, result):
+        if self.tests:
+            self.run_specific_methods(result)
+        else:
+            self.run_all_methods(result)
+
+    def run_specific_methods(self, result):
         for test in self.tests:
             test.run(result)
+
+    def run_all_methods(self, result):
+        test_classes = self.get_classes_for_test()
+        for test_class in test_classes.itervalues():
+            test_methods = self.get_class_methods(test_class)
+            for method in test_methods.keys():
+                test_class(method).run(result)
+
+    def get_classes_for_test(self):
+        classes = inspect.getmembers(sys.modules[self._module], inspect.isclass)
+        classes = [i for i in classes if i[1].__module__ == self._module and i[0].startswith('Test')]
+        classes = dict(classes)
+        return classes
+
+    def get_class_methods(self, target_class):
+        methods = inspect.getmembers(target_class, inspect.ismethod)
+        methods = [m for m in methods if m[0].startswith('test')]
+        methods = dict(methods)
+        return methods
