@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.org/diegoguimaraes/xUnit.svg)](https://travis-ci.org/diegoguimaraes/xUnit)
-
 # xUnit
+[![Build Status](https://travis-ci.org/diegoguimaraes/xUnit.svg)](https://travis-ci.org/diegoguimaraes/xUnit)
 
 Basic unit test framework for practice purposes, based on "Test-Driven Development by Example" by Kent Beck.
 
@@ -18,14 +17,30 @@ class TestExample(TestCase):
     def test_example(self):
         assert(1+1 == 2)
 
+    def test_dummy(self):
+        assert(2+2 == 4)
+```
+
+Run all tests:
+
+```Python
 suite = TestSuite()
-suite.add(TestExample("test_example"))
 result = TestResult()
 suite.run(result)
 print result.summary()
-```
-Output:
 
-`
-1 run, 0 failed
-`
+# 2 run, 0 failed
+```
+
+Run specific tests:
+
+```Python
+suite = TestSuite()
+suite.add(TestExample('test_example'))
+result = TestResult()
+suite.run(result)
+print result.summary()
+
+# 1 run,  failed
+
+```
