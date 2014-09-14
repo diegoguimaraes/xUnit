@@ -1,5 +1,6 @@
 # xUnit
 [![Build Status](https://travis-ci.org/diegoguimaraes/xUnit.svg)](https://travis-ci.org/diegoguimaraes/xUnit)
+[![Coverage Status](https://img.shields.io/coveralls/diegoguimaraes/xUnit.svg)](https://coveralls.io/r/diegoguimaraes/xUnit?branch=master)
 
 Basic unit test framework for practice purposes, based on "Test-Driven Development by Example" by Kent Beck.
 
@@ -42,5 +43,4 @@ suite.run(result)
 print result.summary()
 
 # 1 run,  failed
-
 ```

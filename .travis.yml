@@ -4,6 +4,9 @@ env:
   - TOX_ENV=py27
   - TOX_ENV=flake8
 install:
-  - pip install tox
+  - pip install tox coveralls
 script:
   - tox -e $TOX_ENV
+  - coverage run --source=xunit xunit/test/tests.py test
+after_success:
+  coveralls
