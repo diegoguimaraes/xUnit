@@ -7,6 +7,6 @@ install:
   - pip install tox coveralls
 script:
   - tox -e $TOX_ENV
-  - coverage run -m coverage run -m xunit xunit.test.tests
+  - coverage run -m xunit xunit.test.tests
 after_success:
   - coveralls
