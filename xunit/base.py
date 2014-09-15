@@ -60,8 +60,8 @@ class TestResult(object):
 
 class TestSuite(object):
 
-    def __init__(self):
-        self._module = '__main__'
+    def __init__(self, module=None):
+        self._module = sys.modules['__main__'] if not module else module
         self.tests = []
 
     def add(self, test):
@@ -85,8 +85,8 @@ class TestSuite(object):
                 test_class(method).run(result)
 
     def get_classes_for_test(self):
-        classes = inspect.getmembers(sys.modules[self._module], inspect.isclass)
-        classes = [i for i in classes if i[1].__module__ == self._module and i[0].startswith('Test')]
+        classes = inspect.getmembers(self._module, inspect.isclass)
+        classes = [i for i in classes if i[1].__module__ == self._module.__name__ and i[0].startswith('Test')]
         classes = dict(classes)
         return classes
 
