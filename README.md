@@ -32,35 +32,6 @@ $ python -m xunit example.TestExample
 # 2 run, 0 failed
 ```
 
-
-Running specific tests, `example.py`:
-
-```Python
-from xunit import TestCase, TestSuite, TestResult
-
-class TestExample(TestCase):
-
-    def test_example(self):
-        assert(1+1 == 2)
-
-    def test_dummy(self):
-        assert(2+2 == 4)
-
-suite = TestSuite()
-suite.add(TestExample('test_example'))
-result = TestResult()
-suite.run(result)
-print result.summary()
-
-```
-
-```sh
-$ python example.py
-# 1 run, 0 failed
-$ python -m xunit example
-# 1 run, 0 failed
-```
-
 View module help with `python -m xunit -h`
 
 ```sh
