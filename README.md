@@ -14,16 +14,24 @@ from xunit import TestCase
 class TestExample(TestCase):
 
     def test_example(self):
-        assert(1+1 == 2)
+        assert(1+2 == 3)
 
     def test_dummy(self):
-        assert(2+2 == 4)
+        assert(2+3 == 5)
 ```
 
 ```bash
 $ python -m xunit example
 # 2 run, 0 failed
 ```
+
+Run tests from a specific class:
+
+```sh
+$ python -m xunit example.TestExample
+# 2 run, 0 failed
+```
+
 
 Running specific tests, `example.py`:
 
@@ -65,7 +73,8 @@ optional arguments:
   -h, --help   show this help message and exit
 
 Example:
-    python -m xunit test_module     - run tests from test_module
+    python -m xunit test_module         - run tests from test_module
+    python -m xunit.test_module.Class   - run tests from test_module.Class
 -
 ```
 

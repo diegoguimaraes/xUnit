@@ -60,24 +60,24 @@ class TestResult(object):
 
 class TestSuite(object):
 
-    def __init__(self, module=None):
+    def __init__(self, module=None, class_name=None):
         self._module = sys.modules['__main__'] if not module else module
+        self.class_name = class_name
         self.tests = []
 
-    def add(self, test):
-        self.tests.append(test)
-
     def run(self, result):
-        if self.tests:
-            self.run_specific_methods(result)
+        if self.class_name:
+            self.run_all_class_methods(result)
         else:
-            self.run_all_methods(result)
+            self.run_all(result)
 
-    def run_specific_methods(self, result):
-        for test in self.tests:
-            test.run(result)
+    def run_all_class_methods(self, result):
+        test_class = getattr(self._module, self.class_name)
+        test_methods = self.get_class_methods(test_class)
+        for method in test_methods.keys():
+            test_class(method).run(result)
 
-    def run_all_methods(self, result):
+    def run_all(self, result):
         test_classes = self.get_classes_for_test()
         for test_class in test_classes.itervalues():
             test_methods = self.get_class_methods(test_class)

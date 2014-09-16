@@ -30,13 +30,6 @@ class TestCaseTest(TestCase):
         self.result.test_failed()
         assert("1 run, 1 failed" == self.result.summary())
 
-    def test_suite_run_specific_methods(self):
-        suite = TestSuite()
-        suite.add(WasRun("test_method"))
-        suite.add(WasRun("broken_method"))
-        suite.run(self.result)
-        assert("2 run, 1 failed" == self.result.summary())
-
     def test_get_classes_for_test(self):
         suite = TestSuite(self.module)
         test_classes = suite.get_classes_for_test()
@@ -46,7 +39,7 @@ class TestCaseTest(TestCase):
     def test_if_classes_for_test_startswith_test(self):
         suite = TestSuite(self.module)
         test_classes = suite.get_classes_for_test()
-        assert('NotValidTestClass' not in test_classes)
+        assert('InvalidTestClasss' not in test_classes)
         assert(self.__class__.__name__ in test_classes)
 
     def test_get_methods_for_test_in_each_class(self):
@@ -61,31 +54,68 @@ class TestCaseTest(TestCase):
         assert('test_if_test_methods_startswith_test' in methods)
         assert('__init__' not in methods)
 
+    def test_run_suite_with_specific_class_test(self):
+        test_module = sys.modules[self.__module__]
+        class_name = 'MockTestClass'
+        suite = TestSuite(test_module, class_name)
+        suite.run(self.result)
+        assert "2 run, 0 failed" == self.result.summary()
 
-class NotValidTestClass:
-    """This is an invalid test class. Test class must starts with 'Test' """
+
+class InvalidTestClasss:
+    """This is an invalid test class. Test class must be a subclass of xunit.TestCase."""
     pass
+
+
+class MockTestClass(TestCase):
+
+    def test_dummy_summ(self):
+        assert 1+2 == 3
+
+    def test_dummy_multiply(self):
+        assert 3*5 == 15
 
 
 class TestMainProgram(TestCase):
 
-    def test_command_line_module_argument_not_present(self):
+    def test_if_module_string_is_empty(self):
         test_module = ''
         program = MainProgram(test_module)
-        assert(program.module is None)
+        assert program.module is None
+
+    def test_if_test_module_has_valid_class(self):
+        test_module_class = 'xunit.test.tests.%s' % self.__class__.__name__
+        program = MainProgram(test_module_class)
+        program.set_module_class()
+        assert program.module_class is not None
+
+    def test_if_test_module_has_invalid_class(self):
+        test_module_class = 'xunit.test.tests.Abc'
+        program = MainProgram(test_module_class)
+        program.set_module_class()
+        assert program.module_class is None
+
+    def test_test_module_class_isnt_a_TestCase_subclass(self):
+        test_module_class = 'xunit.test.tests.InvalidTestClasss'
+        program = MainProgram(test_module_class)
+        program.set_module_class()
+        assert program.module_class is None
+
+    def test_load_empty_module(self):
+        test_module = ''
+        program = MainProgram(test_module)
+        result = program.run()
+        assert program.module is None
+        assert result == "No module found."
 
     def test_load_invalid_module(self):
         test_module = 'invalid.module'
         program = MainProgram(test_module)
-        assert(program.module is None)
+        result = program.run()
+        assert program.module is None
+        assert result == "No module found."
 
     def test_load_valid_module(self):
         test_module = 'xunit.test.tests'
         program = MainProgram(test_module)
-        assert(program.module)
-
-    def test_main_program_run_without_specified_module(self):
-        test_module = ''
-        program = MainProgram(test_module)
-        result = program.run()
-        assert(result == "No module found.")
+        assert program.module is not None
