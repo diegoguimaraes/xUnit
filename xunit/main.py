@@ -3,23 +3,20 @@ from xunit import TestSuite, TestResult
 
 class MainProgram(object):
 
-    def __init__(self, args):
-        self.load_module(args)
+    def __init__(self, test_module):
+        self.test_module = test_module
+        self.load_module()
 
-    def load_module(self, args):
-        module = None if len(args) == 1 else args[1]
+    def load_module(self):
         try:
-            self.module = __import__(module, fromlist=['.'])
-        except ImportError:
-            self.module = None
-        except TypeError:
+            self.module = __import__(self.test_module, fromlist=['.'])
+        except (ImportError, ValueError):
             self.module = None
 
     def run(self):
         if not self.module:
             return 'No module found.'
-        else:
-            suite = TestSuite(self.module)
-            result = TestResult()
-            suite.run(result)
-            return result.summary()
+        suite = TestSuite(self.module)
+        result = TestResult()
+        suite.run(result)
+        return result.summary()

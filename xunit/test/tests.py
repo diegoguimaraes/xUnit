@@ -70,22 +70,22 @@ class NotValidTestClass:
 class TestMainProgram(TestCase):
 
     def test_command_line_module_argument_not_present(self):
-        command_args = ['/home/diego/xunit/xunit/__main__.py']
-        program = MainProgram(command_args)
+        test_module = ''
+        program = MainProgram(test_module)
         assert(program.module is None)
 
     def test_load_invalid_module(self):
-        command_args = ['/home/diego/xunit/xunit/__main__.py', 'invalid.module']
-        program = MainProgram(command_args)
+        test_module = 'invalid.module'
+        program = MainProgram(test_module)
         assert(program.module is None)
 
     def test_load_valid_module(self):
-        command_args = ['/home/diego/xunit/xunit/__main__.py', 'xunit.test.tests']
-        program = MainProgram(command_args)
+        test_module = 'xunit.test.tests'
+        program = MainProgram(test_module)
         assert(program.module)
 
-    def test_main_program_run(self):
-        command_args = ['/home/diego/xunit/xunit/__main__.py']
-        program = MainProgram(command_args)
+    def test_main_program_run_without_specified_module(self):
+        test_module = ''
+        program = MainProgram(test_module)
         result = program.run()
         assert(result == "No module found.")

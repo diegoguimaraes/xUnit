@@ -4,10 +4,6 @@
 
 Basic unit test framework for practice purposes, based on "Test-Driven Development by Example" by Kent Beck.
 
-## Tests
-Run the framework tests with `$ python -m xunit.test.tests`
-
-
 ## Usage example
 
 Running all tests, `example.py`:
@@ -56,3 +52,22 @@ $ python example.py
 $ python -m xunit example
 # 1 run, 0 failed
 ```
+
+View module help with `python -m xunit -h`
+
+```sh
+usage: xunit [-h] test_module
+
+positional arguments:
+  test_module  Run tests from test_module
+
+optional arguments:
+  -h, --help   show this help message and exit
+
+Example:
+    python -m xunit test_module     - run tests from test_module
+-
+```
+
+## Tests
+Run the framework tests with `$ python -m xunit.test.tests`
