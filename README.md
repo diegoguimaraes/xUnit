@@ -32,6 +32,14 @@ $ python -m xunit example.TestExample
 # 2 run, 0 failed
 ```
 
+Run specific test method:
+
+```sh
+$ python -m xunit example.TestExample.test_dummy
+# 1 run, 0 failed
+```
+
+
 View module help with `python -m xunit -h`
 
 ```sh
@@ -44,8 +52,9 @@ optional arguments:
   -h, --help   show this help message and exit
 
 Example:
-    python -m xunit test_module         - run tests from test_module
-    python -m xunit.test_module.Class   - run tests from test_module.Class
+    python -m xunit test_module                 - run tests from test_module
+    python -m xunit.test_module.Class           - run tests from test_module.Class
+    python -m xunit.test_module.Class.method    - run specifict test method
 -
 ```
 

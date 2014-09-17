@@ -9,15 +9,19 @@ class MainProgram(object):
         self.module = None
         self.module_class = None
         self.class_name = None
-        self.set_class_name()
+        self.method_name = None
+        self.set_class_and_method_names()
         self.load_module()
 
-    def set_class_name(self):
-        class_name = self.test_module.split('.')[-1]
-        if class_name and class_name[0].isupper():
-            self.class_name = class_name
-        else:
-            self.class_name = None
+    def set_class_and_method_names(self):
+        module_path = self.test_module.split('.')
+        if len(module_path) > 1:
+            if module_path[-2][0].isupper() and module_path[-1].islower():
+                self.class_name, self.method_name = module_path[-2], module_path[-1]
+            elif module_path[-1][0].isupper():
+                self.class_name = module_path[-1]
+            else:
+                self.class_name, self.method_name = None, None
 
     def load_module(self):
         if not self.test_module:
@@ -49,7 +53,7 @@ class MainProgram(object):
         if not self.module:
             return 'No module found.'
         self.set_module_class()
-        suite = TestSuite(self.module, self.class_name)
+        suite = TestSuite(self.module, self.class_name, self.method_name)
         result = TestResult()
         suite.run(result)
         return result.summary()

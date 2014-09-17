@@ -9,8 +9,9 @@ if __name__ == '__main__':
         prog="xunit",
         epilog=textwrap.dedent('''\
                 Examples:
-                    python -m xunit test_module         - run tests from test_module
-                    python -m xunit.test_module.Class   - run tests from test_module.Class
+                    python -m xunit test_module                 - run tests from test_module
+                    python -m xunit.test_module.Class           - run tests from test_module.Class
+                    python -m xunit.test_module.Class.method    - run specific test method
                 -
                 ''')
     )
