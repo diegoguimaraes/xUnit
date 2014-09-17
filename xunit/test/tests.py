@@ -64,6 +64,11 @@ class TestCaseTest(TestCase):
         suite.run(self.result)
         assert "0 run, 0 failed" == self.result.summary()
 
+    def test_run_suite_with_specific_invalid_class(self):
+        suite = TestSuite(self.module, 'InvalidTestClasss')
+        suite.run(self.result)
+        assert "0 run, 0 failed" == self.result.summary()
+
     def test_run_suite_with_specific_class_and_method(self):
         suite = TestSuite(self.module, 'MockTestClass', 'test_dummy_sum')
         suite.run(self.result)
@@ -96,24 +101,6 @@ class TestMainProgram(TestCase):
         program = MainProgram(test_module)
         assert program.module is None
 
-    def test_if_test_module_has_valid_class(self):
-        test_module_class = '{}.{}'.format(self.__module__, self.__class__.__name__)
-        program = MainProgram(test_module_class)
-        program.set_module_class()
-        assert program.module_class is not None
-
-    def test_if_test_module_has_invalid_class(self):
-        test_module_class = '{}.Abc'.format(self.__module__)
-        program = MainProgram(test_module_class)
-        program.set_module_class()
-        assert program.module_class is None
-
-    def test_test_module_class_isnt_a_TestCase_subclass(self):
-        test_module_class = '{}.InvalidTestClasss'.format(self.__module__)
-        program = MainProgram(test_module_class)
-        program.set_module_class()
-        assert program.module_class is None
-
     def test_load_empty_module(self):
         program = MainProgram('')
         result = program.run()
@@ -130,7 +117,14 @@ class TestMainProgram(TestCase):
         program = MainProgram(self.__module__)
         assert program.module is not None
 
+    def test_module_set_class_name(self):
+        test_module = '{}.MockTestClass'.format(self.__module__)
+        program = MainProgram(test_module)
+        program.run()
+        assert 'MockTestClass' == program.class_name
+
     def test_module_set_method_name(self):
         test_module = '{}.MockTestClass.test_dummy_sum'.format(self.__module__)
         program = MainProgram(test_module)
+        program.run()
         assert 'test_dummy_sum' == program.method_name
