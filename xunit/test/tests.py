@@ -36,11 +36,11 @@ class TestCaseTest(TestCase):
         assert(self.__class__.__name__ in test_classes.keys())
         assert(isinstance(self, test_classes[self.__class__.__name__]))
 
-    def test_if_classes_for_test_startswith_test(self):
+    def test_if_classes_for_test_are_valid(self):
         suite = TestSuite(self.module)
         test_classes = suite.get_classes_for_test()
-        assert('InvalidTestClasss' not in test_classes)
-        assert(self.__class__.__name__ in test_classes)
+        assert ('TestInvalidClass' not in test_classes)
+        assert (self.__class__.__name__ in test_classes)
 
     def test_get_methods_for_test_in_each_class(self):
         suite = TestSuite(self.module)
@@ -65,7 +65,7 @@ class TestCaseTest(TestCase):
         assert "0 run, 0 failed" == self.result.summary()
 
     def test_run_suite_with_specific_invalid_class(self):
-        suite = TestSuite(self.module, 'InvalidTestClasss')
+        suite = TestSuite(self.module, 'TestInvalidClass')
         suite.run(self.result)
         assert "0 run, 0 failed" == self.result.summary()
 
@@ -80,8 +80,9 @@ class TestCaseTest(TestCase):
         assert "0 run, 0 failed" == self.result.summary()
 
 
-class InvalidTestClasss:
-    """This is an invalid test class. Test class must be a subclass of xunit.TestCase."""
+class TestInvalidClass:
+    """This is an invalid test class.
+    Test class must be a subclass of xunit.TestCase."""
     pass
 
 

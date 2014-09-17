@@ -111,6 +111,7 @@ class TestSuite(object):
     def get_classes_for_test(self):
         classes = inspect.getmembers(self._module, inspect.isclass)
         classes = [i for i in classes if i[1].__module__ == self._module.__name__ and i[0].startswith('Test')]
+        classes = [i for i in classes if issubclass(i[1], TestCase)]
         classes = dict(classes)
         return classes
 
