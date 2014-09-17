@@ -64,41 +64,49 @@ class TestSuite(object):
         self._module = sys.modules['__main__'] if not module else module
         self.class_name = class_name
         self.method_name = method_name
-        self.tests = []
+        self.result = None
 
     def run(self, result):
+        self.result = result
         if self.class_name and not self.method_name:
-            self.run_all_class_methods(result)
+            self.run_all_class_methods()
         elif self.class_name and self.method_name:
-            self.run_specified_method(result)
+            self.run_specified_method()
         else:
-            self.run_all(result)
+            self.run_all()
 
-    def run_all_class_methods(self, result):
+    def load_test_class(self):
         try:
             test_class = getattr(self._module, self.class_name)
         except AttributeError:
-            pass
-        else:
-            test_methods = self.get_class_methods(test_class)
-            for method in test_methods.keys():
-                test_class(method).run(result)
+            return None
+        return test_class
 
-    def run_specified_method(self, result):
+    def method_exists(self, class_name, method):
         try:
-            test_class = getattr(self._module, self.class_name)
-            getattr(test_class, self.method_name)
+            getattr(class_name, method)
         except AttributeError:
-            pass
-        else:
-            test_class(self.method_name).run(result)
+            return False
+        return True
 
-    def run_all(self, result):
+    def run_all_class_methods(self):
+        test_class = self.load_test_class()
+        self.run_methods(test_class)
+
+    def run_specified_method(self):
+        test_class = self.load_test_class()
+        if self.method_exists(test_class, self.method_name):
+            test_class(self.method_name).run(self.result)
+
+    def run_all(self):
         test_classes = self.get_classes_for_test()
         for test_class in test_classes.itervalues():
-            test_methods = self.get_class_methods(test_class)
-            for method in test_methods.keys():
-                test_class(method).run(result)
+            self.run_methods(test_class)
+
+    def run_methods(self, test_class):
+        test_methods = self.get_class_methods(test_class)
+        for method in test_methods.keys():
+            test_class(method).run(self.result)
 
     def get_classes_for_test(self):
         classes = inspect.getmembers(self._module, inspect.isclass)
