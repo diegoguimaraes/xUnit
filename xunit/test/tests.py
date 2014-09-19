@@ -13,46 +13,46 @@ class TestCaseTest(TestCase):
     def test_template_method(self):
         test = WasRun('test_method')
         test.run(self.result)
-        assert("setUp test_method tearDown " == test.log)
+        assert "setUp test_method tearDown " == test.log
 
     def test_result(self):
         test = WasRun('test_method')
         test.run(self.result)
-        assert("1 run, 0 failed" == self.result.summary())
+        assert "1 run, 0 failed" == self.result.summary()
 
     def test_failed_result(self):
         test = WasRun('broken_method')
         test.run(self.result)
-        assert("1 run, 1 failed" == self.result.summary())
+        assert "1 run, 1 failed" == self.result.summary()
 
     def test_failed_result_formatting(self):
         self.result.test_started()
         self.result.test_failed()
-        assert("1 run, 1 failed" == self.result.summary())
+        assert "1 run, 1 failed" == self.result.summary()
 
     def test_get_classes_for_test(self):
         suite = TestSuite(self.module)
         test_classes = suite.get_classes_for_test()
-        assert(self.__class__.__name__ in test_classes.keys())
-        assert(isinstance(self, test_classes[self.__class__.__name__]))
+        assert self.__class__.__name__ in test_classes.keys()
+        assert isinstance(self, test_classes[self.__class__.__name__])
 
     def test_if_classes_for_test_are_valid(self):
         suite = TestSuite(self.module)
         test_classes = suite.get_classes_for_test()
-        assert ('TestInvalidClass' not in test_classes)
-        assert (self.__class__.__name__ in test_classes)
+        assert 'TestInvalidClass' not in test_classes
+        assert self.__class__.__name__ in test_classes
 
     def test_get_methods_for_test_in_each_class(self):
         suite = TestSuite(self.module)
         methods = suite.get_class_methods(TestCaseTest)
-        assert('test_template_method' in methods)
-        assert('test_get_methods_for_test_in_each_class' in methods)
+        assert 'test_template_method' in methods
+        assert 'test_get_methods_for_test_in_each_class' in methods
 
     def test_if_test_methods_startswith_test(self):
         suite = TestSuite()
         methods = suite.get_class_methods(TestCaseTest)
-        assert('test_if_test_methods_startswith_test' in methods)
-        assert('__init__' not in methods)
+        assert 'test_if_test_methods_startswith_test' in methods
+        assert '__init__' not in methods
 
     def test_run_suite_with_specific_class_test(self):
         suite = TestSuite(self.module, 'MockTestClass')
