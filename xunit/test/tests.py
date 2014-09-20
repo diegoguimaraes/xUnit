@@ -129,3 +129,50 @@ class TestMainProgram(TestCase):
         program = MainProgram(test_module)
         program.run()
         assert 'test_dummy_sum' == program.method_name
+
+
+class TestCaseAsserts(TestCase):
+
+    def test_assert_equals(self):
+        assert self.assertEquals(3, 3)
+        try:
+            assert self.assertEquals(2, 1)
+        except AssertionError:
+            pass
+
+    def test_assert_not_equals(self):
+        assert self.assertNotEquals(1, 2)
+        try:
+            assert self.assertNotEquals(2, 2)
+        except AssertionError:
+            pass
+
+    def test_assert_true(self):
+        assert self.assertTrue(1 == 1)
+        try:
+            assert self.assertTrue(1 == 2)
+        except AssertionError:
+            pass
+
+    def test_assert_false(self):
+        assert self.assertFalse(1 == 2)
+        try:
+            assert self.assertFalse(2 == 2)
+        except AssertionError:
+            pass
+
+    def test_assert_in(self):
+        assert self.assertIn('name', 'first name')
+        assert self.assertIn(1, [3, 2, 1])
+        try:
+            assert self.assertIn(1, [3, 4, 5])
+        except AssertionError:
+            pass
+
+    def test_assert_not_in(self):
+        assert self.assertNotIn('name', 'John Smith')
+        assert self.assertNotIn(1, [3, 4, 5])
+        try:
+            assert self.assertNotIn('key', {'key': 'some value'})
+        except AssertionError:
+            pass

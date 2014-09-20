@@ -6,6 +6,8 @@ class MainProgram(object):
     def __init__(self, test_module):
         self.test_module = test_module
         self.module = None
+        self.class_name = None
+        self.method_name = None
         self.set_class_and_method_names()
         self.load_module()
 

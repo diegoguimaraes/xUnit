@@ -25,6 +25,36 @@ class TestCase(object):
             result.test_failed()
         self.tearDown()
 
+    def assertEquals(self, first, second):
+        if not first == second:
+            raise AssertionError
+        return True
+
+    def assertNotEquals(self, first, second):
+        if not first != second:
+            raise AssertionError
+        return True
+
+    def assertTrue(self, expression):
+        if not expression:
+            raise AssertionError
+        return True
+
+    def assertFalse(self, expression):
+        if expression:
+            raise AssertionError
+        return True
+
+    def assertIn(self, first, second):
+        if first not in second:
+            raise AssertionError
+        return True
+
+    def assertNotIn(self, first, second):
+        if first in second:
+            raise AssertionError
+        return True
+
 
 class WasRun(TestCase):
 
