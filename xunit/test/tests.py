@@ -20,6 +20,12 @@ class TestCaseTest(TestCase):
         test.run(self.result)
         assert "1 run, 0 failed" == self.result.summary()
 
+    def test_failed_result(self):
+        # expected failure
+        test = WasRun('broken_method')
+        test.run(self.result)
+        assert "1 run, 1 failed" == self.result.summary(), "Expected Failure"
+
     def test_failed_result_formatting(self):
         self.result.test_started()
         self.result.test_failed()

@@ -21,7 +21,7 @@ class TestCase(object):
         try:
             method = getattr(self, self.name)
             method()
-        except Exception, e:
+        except Exception:
             self.printExceptionMessage()
             result.test_failed()
         self.tearDown()
@@ -32,7 +32,6 @@ class TestCase(object):
         print '{}'.format('-'*60)
         traceback.print_exc(file=sys.stdout)
         print '{}'.format('-'*60)
-
 
     def assertEquals(self, first, second):
         if not first == second:
@@ -76,6 +75,9 @@ class WasRun(TestCase):
 
     def tearDown(self):
         self.log += "tearDown "
+
+    def broken_method(self):
+        raise Exception("Expected test failure")
 
 
 class TestResult(object):
