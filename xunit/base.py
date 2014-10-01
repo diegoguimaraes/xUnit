@@ -1,5 +1,6 @@
 import sys
 import inspect
+import traceback
 
 
 class TestCase(object):
@@ -21,38 +22,46 @@ class TestCase(object):
             method = getattr(self, self.name)
             method()
         except Exception, e:
-            print(e.message)
+            self.printExceptionMessage()
             result.test_failed()
         self.tearDown()
 
+    def printExceptionMessage(self):
+        print '{}'.format('='*60)
+        print "FAIL: {}".format(self.name)
+        print '{}'.format('-'*60)
+        traceback.print_exc(file=sys.stdout)
+        print '{}'.format('-'*60)
+
+
     def assertEquals(self, first, second):
         if not first == second:
-            raise AssertionError
+            raise AssertionError("{} != {}".format(first, second))
         return True
 
     def assertNotEquals(self, first, second):
         if not first != second:
-            raise AssertionError
+            raise AssertionError("{} == {}".format(first, second))
         return True
 
     def assertTrue(self, expression):
         if not expression:
-            raise AssertionError
+            raise AssertionError("{} is not True".format(expression))
         return True
 
     def assertFalse(self, expression):
         if expression:
-            raise AssertionError
+            raise AssertionError("{} is not False".format(expression))
         return True
 
     def assertIn(self, first, second):
         if first not in second:
-            raise AssertionError
+            raise AssertionError("{} not in {}".format(first, second))
         return True
 
     def assertNotIn(self, first, second):
         if first in second:
-            raise AssertionError
+            raise AssertionError("{} in {}".format(first, second))
         return True
 
 
@@ -67,9 +76,6 @@ class WasRun(TestCase):
 
     def tearDown(self):
         self.log += "tearDown "
-
-    def broken_method(self):
-        raise Exception
 
 
 class TestResult(object):

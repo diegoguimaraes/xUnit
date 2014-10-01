@@ -20,11 +20,6 @@ class TestCaseTest(TestCase):
         test.run(self.result)
         assert "1 run, 0 failed" == self.result.summary()
 
-    def test_failed_result(self):
-        test = WasRun('broken_method')
-        test.run(self.result)
-        assert "1 run, 1 failed" == self.result.summary()
-
     def test_failed_result_formatting(self):
         self.result.test_started()
         self.result.test_failed()
@@ -170,7 +165,7 @@ class TestCaseAsserts(TestCase):
             pass
 
     def test_assert_not_in(self):
-        assert self.assertNotIn('name', 'John Smith')
+        assert self.assertNotIn('George', 'John Smith')
         assert self.assertNotIn(1, [3, 4, 5])
         try:
             assert self.assertNotIn('key', {'key': 'some value'})
